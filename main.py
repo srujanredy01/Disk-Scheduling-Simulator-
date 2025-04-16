@@ -66,7 +66,6 @@ class DiskSchedulingSimulator:
         self.disk_size_entry.insert(0, "200")
         self.disk_size_entry.pack(pady=5)
         self.disk_size_entry.bind("<KeyRelease>", self.on_input_change)
-
         # Algorithm selection
         ttk.Label(self.left_frame, text="Algorithm:").pack(anchor="w", pady=5)
         self.algo_var = tk.StringVar(value="FCFS")
@@ -75,7 +74,6 @@ class DiskSchedulingSimulator:
                                 state="readonly", width=15)
         algo_menu.pack(pady=5)
         algo_menu.bind("<<ComboboxSelected>>", self.on_input_change)
-
         # Direction selection
         ttk.Label(self.left_frame, text="Direction (SCAN/C-SCAN):").pack(anchor="w", pady=5)
         self.dir_var = tk.StringVar(value="outward")
@@ -83,36 +81,27 @@ class DiskSchedulingSimulator:
                                values=["outward", "inward"], state="readonly", width=15)
         dir_menu.pack(pady=5)
         dir_menu.bind("<<ComboboxSelected>>", self.on_input_change)
-
         # Simulation button
         ttk.Button(self.left_frame, text="Simulate", command=self.simulate).pack(pady=(15, 5))
-
         # Animation control buttons
         button_frame = tk.Frame(self.left_frame, bg="#f4f6f8")
         button_frame.pack(pady=5)
-
         self.play_button = ttk.Button(button_frame, text="▶ Play", command=self.play_simulation)
         self.play_button.grid(row=0, column=0, padx=5)
-
         self.pause_button = ttk.Button(button_frame, text="⏸ Pause", command=self.pause_simulation, state=tk.DISABLED)
         self.pause_button.grid(row=0, column=1, padx=5)
-
         self.reset_button = ttk.Button(button_frame, text="Reset", command=self.reset)
         self.reset_button.grid(row=0, column=2, padx=5)
-
         # Metrics display
         self.metrics_frame = tk.LabelFrame(self.left_frame, text="Performance Metrics", 
                                          bg="#f4f6f8", fg="#333", font=("Segoe UI", 10, "bold"))
         self.metrics_frame.pack(pady=20, fill=tk.X)
-
         self.metrics_label = tk.Label(self.metrics_frame, text="", bg="#f4f6f8", 
                                     font=("Segoe UI", 10), justify="left", fg="#333")
         self.metrics_label.pack(pady=5, padx=5)
-
         # Status Screen with scrollbar
         status_frame = tk.Frame(self.left_frame)
         status_frame.pack(pady=(0, 10), fill=tk.BOTH, expand=True)
-
         self.status_text = tk.Text(status_frame, height=15, width=40, bg="#ffffff", 
                                  fg="#2d3436", font=("Segoe UI", 10), wrap="word")
         self.status_scroll = tk.Scrollbar(status_frame, command=self.status_text.yview)
@@ -120,17 +109,14 @@ class DiskSchedulingSimulator:
         
         self.status_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         self.status_scroll.pack(side=tk.RIGHT, fill=tk.Y)
-
         # Exit button
         exit_button = ttk.Button(self.left_frame, text="Exit", command=self.root.destroy)
         exit_button.pack(side=tk.BOTTOM, pady=(20, 0))
-
     def build_plot_area(self):
         # Create the plot area
         self.fig, self.ax = plt.subplots(figsize=(10, 4))
         self.fig.set_facecolor("#f9f9f8")
         self.ax.set_facecolor("#f9f9f8")
-        
         # Initialize empty plot
         self.ax.set_ylim(-0.1, 0.1)
         self.ax.set_yticks([])
@@ -138,11 +124,9 @@ class DiskSchedulingSimulator:
         self.ax.set_xlabel("Track Number")
         self.ax.set_title("Disk Scheduling Visualization")
         self.ax.grid(True, axis='x', linestyle='--')
-        
         # Create canvas for embedding in Tkinter
         self.canvas = FigureCanvasTkAgg(self.fig, master=self.right_frame)
         self.canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
-
     def log_status(self, message, is_error=False):
         """Log a message to the status screen with appropriate color."""
         # Insert the message
@@ -152,7 +136,6 @@ class DiskSchedulingSimulator:
             current_line = self.status_text.index(tk.END).split('.')[0]  # Get the line number
             self.status_text.tag_add("error", f"{current_line}.0", f"{current_line}.0 lineend")
         self.status_text.see(tk.END)  # Auto-scroll to the latest message
-
     def on_input_change(self, event):
         """Handle changes in input fields and log them."""
         try:
@@ -162,7 +145,6 @@ class DiskSchedulingSimulator:
             disk_size = int(self.disk_size_entry.get()) if self.disk_size_entry.get().strip() else 200
             algorithm = self.algo_var.get()
             direction = self.dir_var.get()
-
             # Log the changes
             self.log_status(f"Input updated - Requests: {requests_input}, Head: {head}, Disk Size: {disk_size}, "
                           f"Algorithm: {algorithm}, Direction: {direction}")
