@@ -5,14 +5,12 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import time
 from threading import Thread
 import queue
-
 class DiskSchedulingSimulator:
     def __init__(self, root):  # Fixed typo: _init_ to __init__
         self.root = root
         self.root.title("Disk Scheduling Simulator")
         self.root.configure(bg="#f4f6f8")
         self.root.state('zoomed')  # Fullscreen on launch
-
         # Initialize variables
         self.requests = []
         self.head = 0
@@ -24,11 +22,9 @@ class DiskSchedulingSimulator:
         self.paused = False
         self.current_sequence = []
         self.current_seek_time = 0
-
         # Build the GUI
         self.build_gui()
         self.configure_status_text()  # Moved configuration to initialization
-
     def build_gui(self):
         # Configure styles
         style = ttk.Style()
@@ -44,15 +40,12 @@ class DiskSchedulingSimulator:
 
         self.right_frame = tk.Frame(self.root, bg="#f4f6f8", padx=20, pady=20)
         self.right_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
-
         # Add title
         ttk.Label(self.left_frame, text="Disk Scheduling Simulator", 
                  style="Title.TLabel").pack(pady=(0, 20), anchor="w")
-
         # Build input and plot areas
         self.build_inputs()
         self.build_plot_area()
-
     def build_inputs(self):
         # Disk requests input
         ttk.Label(self.left_frame, text="Disk Requests (comma-separated):").pack(anchor="w", pady=5)
@@ -60,7 +53,6 @@ class DiskSchedulingSimulator:
         self.requests_entry.insert(0, "50, 82, 120, 30, 140, 10, 180, 65")
         self.requests_entry.pack(pady=5)
         self.requests_entry.bind("<KeyRelease>", self.on_input_change)
-
         # Head position input
         ttk.Label(self.left_frame, text="Initial Head Position:").pack(anchor="w", pady=5)
         self.head_entry = ttk.Entry(self.left_frame, width=10)
